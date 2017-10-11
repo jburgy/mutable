@@ -18,7 +18,7 @@ def phi(t): return atan2(x(t), y(t))
 ```
 Now pretend you need to calculate the following partial derivative: ![](https://latex.codecogs.com/gif.latex?\left.\frac{\partial&space;\phi}{\partial&space;x}\right|_{x(t)})
 
-Mutable lets you write
+```mutates``` lets you write
 ```python
 def dphi_by_dx(t, epsilon=1e-6):
     x_t = x.ref(t)
