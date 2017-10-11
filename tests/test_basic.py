@@ -1,12 +1,12 @@
 #-*-coding:utf8;-*-
 
-from mutable import mutable, scope
+from mutable import mutates, scope
 from unittest import TestCase, main
 
 class MutableTest(TestCase):
 
     def setUp(self):
-        @mutable
+        @mutates
         def fib(n):
             return n if n<2 else fib(n-1)+fib(n-2)
         self.fib = fib
@@ -41,10 +41,10 @@ class MutableTest(TestCase):
         
     def test_edges(self):
         fib = self.fib
-        @mutable
+        @mutates
         def f(n):
             return -n
-        @mutable
+        @mutates
         def g(n):
             return f(fib(n))
         
@@ -73,7 +73,7 @@ class MutableTest(TestCase):
     def test_garbage(self):
         from gc import garbage, collect
     
-        @mutable
+        @mutates
         def collatz(m, n):
             return n if m==1 else collatz(3*m+1 if m&1 else m//2, n+1)
            
@@ -105,19 +105,19 @@ class MutableTest(TestCase):
         
     def test_edges2(self):
         'create edge with if'
-        f = mutable(lambda n: 3*n+1)
-        g = mutable(lambda n: n&1)
-        h = mutable(lambda n: n//2)
-        c = mutable(lambda n: f(n) if g(n) else h(n))
+        f = mutates(lambda n: 3*n+1)
+        g = mutates(lambda n: n&1)
+        h = mutates(lambda n: n//2)
+        c = mutates(lambda n: f(n) if g(n) else h(n))
         
         self._test_indirection(f, g, h, c, g27_value=False)
     
     def test_edges3(self):
         'create edge with function indirection'
-        f = mutable(lambda n: 3*n+1)
-        g = mutable(lambda n: f if n&1 else g)
-        h = mutable(lambda n: n//2)
-        c = mutable(lambda n: g(n)(n))
+        f = mutates(lambda n: 3*n+1)
+        g = mutates(lambda n: f if n&1 else g)
+        h = mutates(lambda n: n//2)
+        c = mutates(lambda n: g(n)(n))
         
         self._test_indirection(f, g, h, c, g27_value=h)
 
