@@ -16,8 +16,8 @@ class MutableTest(TestCase):
 
     def test_update(self):
         fib  = self.fib
-        fib5 = fib.ref(5)
-        fib7 = fib.ref(7)
+        fib5 = fib.ref(5)  # type: ignore[attr-defined]
+        fib7 = fib.ref(7)  # type: ignore[attr-defined]
         self.assertIsNone(fib5())
         self.assertIsNone(fib7())
         self.assertEqual(fib(7), 13)
@@ -48,10 +48,10 @@ class MutableTest(TestCase):
         def g(n):
             return f(fib(n))
         
-        f3 = f.ref(3)
-        f5 = f.ref(5)
-        g5 = g.ref(5)
-        fib5 = fib.ref(5)
+        f3 = f.ref(3)  # type: ignore[attr-defined]
+        f5 = f.ref(5)  # type: ignore[attr-defined]
+        g5 = g.ref(5)  # type: ignore[attr-defined]
+        fib5 = fib.ref(5)  # type: ignore[attr-defined]
         self.assertIsNone(f5())
         self.assertEqual(g(5), -5)
         self.assertIn(g5(), f5().callers)
@@ -75,10 +75,10 @@ class MutableTest(TestCase):
     
         @mutates
         def collatz(m, n):
-            return n if m==1 else collatz(3*m+1 if m&1 else m//2, n+1)
+            return n if m==1 else collatz(3*m+1 if m&1 else m//2, n+1)  # noqa F821
            
         self.assertEqual(collatz(17, 0), 12)
-        self.assertIn(collatz.ref(17, 0)(), collatz.ref(52, 1)().callers)
+        self.assertIn(collatz.ref(17, 0)(), collatz.ref(52, 1)().callers)  # type: ignore[attr-defined]
         del collatz
         collect()
         self.assertEqual([], garbage)

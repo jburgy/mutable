@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mutable"
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.13"
+license = {file = "LICENSE"}
+
+[tool.uv]
+dev-dependencies = [
+    "mypy>=1.16.0",
+    "pytest>=8.4.1",
+]
+
+[tool.pytest.ini_options]
+addopts = ["--doctest-modules"]
